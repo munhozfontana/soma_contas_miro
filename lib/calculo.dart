@@ -1,12 +1,11 @@
 import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:intl/intl.dart';
 
+import 'exceptions/Business_exception.dart';
 import 'models/category_context_entity.dart';
 import 'models/category_entity.dart';
 import 'models/creidt_bill_entity.dart';
@@ -16,13 +15,87 @@ typedef Success = String;
 typedef Error = List<CreditBillEntity>;
 String jump = '\n';
 final _repository = CategoriesContextRepository();
-var letterExcelFormula = '';
+List<String> _ignoreWordsDebit = [
+  "3061432-1",
+  "975547-7",
+  "3157037-9",
+  "Pagamento de Fatura",
+];
 
-Future<Either<Error, Success>> calculo() async {
-  List<String?> paths = await _getPaths();
-  var date = _getDateFromName(paths.first!);
+List<String> _ignoreWordsCredit = [
+  "Pagamento recebido",
+  "Crédito de atraso",
+  "Pagamento de Fatura",
+];
+
+Future<Either<List<String>, String>> importBills(
+    List<String> pathsCredit, List<String> pathsDebit, DateTime date) async {
+  List<String> resCredit = [];
+  List<String> resDebit = [];
+  try {
+    if (pathsCredit.isNotEmpty) {
+      resCredit = await _importCreditByPaths(pathsCredit, date);
+    }
+
+    if (pathsDebit.isNotEmpty) {
+      resDebit = await _importDebitByPaths(pathsDebit, date);
+    }
+
+    final res = resCredit.mapWithIndex((t, i) {
+      if (t.contains('SUM')) {
+        return t;
+      }
+
+      if (resDebit.isNotEmpty) {
+        return '${num.parse(t) + num.parse(resDebit[i])}';
+      }
+      return t;
+    }).toList();
+
+    var resultExcel = res.join(jump).replaceAll('.', ',');
+    Clipboard.setData(ClipboardData(text: resultExcel));
+    return Right(resultExcel);
+  } on BusinessException catch (e) {
+    return Left(e.error);
+  }
+}
+
+Future<List<String>> _importCreditByPaths(
+    List<String> paths, DateTime date) async {
+  final bills = (await _getTotalBills(paths, _billsCreditToEntities));
+  return (await calculo(bills, date, _getLetterByDate(date)));
+}
+
+Future<List<String>> _importDebitByPaths(
+    List<String> paths, DateTime date) async {
+  final bills = (await _getTotalBills(paths, _billsDebitToEntities));
+  return (await calculo(bills, date, _getLetterByDate(date)));
+}
+
+Future<List<String>> calculo(
+  List<String> listBills,
+  DateTime date,
+  String letterExcelFormula,
+) async {
+  _getLetterByDate(date);
+
+  var categoriesContext = _repository.listAll();
+
+  int lengthCount = 0;
+  for (var category in categoriesContext) {
+    listBills.insert(
+      lengthCount,
+      '=SUM($letterExcelFormula${54 + lengthCount}:$letterExcelFormula${54 + lengthCount + category.subCategories.length - 1})',
+    );
+    lengthCount += (category.subCategories.length + 1);
+  }
+
+  return listBills;
+}
+
+String _getLetterByDate(DateTime date) {
+  var letterExcelFormula = '';
   var alfabety = _alfabetyDtoZ();
-
   var countEven = 0;
   for (var i = 0; i < alfabety.length; i++) {
     if (i.isEven) {
@@ -33,50 +106,32 @@ Future<Either<Error, Success>> calculo() async {
     }
   }
 
-  var listBills =
-      (await _getTotalBills(paths)).map((e) => e.toString()).toList();
-  var categoriesContext = _repository.listAll();
-
-  int lengthCount = 0;
-  for (var category in categoriesContext) {
-    listBills.insert(lengthCount,
-        '=SUM($letterExcelFormula${54 + lengthCount}:$letterExcelFormula${54 + lengthCount + category.subCategories.length - 1})');
-    lengthCount += (category.subCategories.length + 1);
-  }
-
-  Clipboard.setData(
-      ClipboardData(text: listBills.join(jump).replaceAll('.', ',')));
-  return const Right('');
+  return letterExcelFormula;
 }
 
-List<String> _alfabetyDtoZ() {
-  int charA = 'D'.codeUnitAt(0);
-  return String.fromCharCodes(Iterable.generate(26, (x) => charA + x))
-      .split('');
-}
-
-DateTime _getDateFromName(String path) {
-  var dateString = RegExp(r'[0-9]{4}-[0-9]{2}').firstMatch(path)!.group(0);
-  var dateTime = DateFormat('yyyy-MM').parse(dateString!);
-  return dateTime;
-}
-
-Future<List<double>> _getTotalBills(List<String?> paths) async {
+Future<List<String>> _getTotalBills(
+  List<String?> paths,
+  Future<List<CreditBillEntity>> Function(String path) toEntity,
+) async {
   List<List<double>> allListsNumbers = [];
   for (var i = 0; i < paths.length; i++) {
     allListsNumbers.add([]);
-    var creditBills = await _billsToEntities(paths[i]!);
+    var creditBills = await toEntity(paths[i]!);
     final res = _calculeBills(creditBills);
-    res.fold((l) => null, (response) {
-      for (var e in response) {
-        allListsNumbers[i]
-            .addAll(e.subCategories.map((e) => e.total.toDouble()).toList());
-      }
-    });
+    for (var e in res) {
+      allListsNumbers[i].addAll(
+        e.subCategories.map((e) => e.total.toDouble()).toList(),
+      );
+    }
   }
 
   List<double> listNumbers = [];
 
+  for (var i = 0; i < allListsNumbers.length; i++) {
+    print(paths[i]);
+    print(allListsNumbers[i].reduce((value, element) => value + element));
+    print("###########\n");
+  }
   for (var i = 0; i < allListsNumbers.length; i++) {
     if (listNumbers.isEmpty) {
       listNumbers.addAll(List.generate(
@@ -89,43 +144,77 @@ Future<List<double>> _getTotalBills(List<String?> paths) async {
     }
   }
 
-  return listNumbers;
+  return listNumbers
+      .map(
+        (e) => e.toString(),
+      )
+      .toList();
 }
 
-Future<List<String?>> _getPaths() async {
-  FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: ['csv'],
-    allowMultiple: true,
+Future<List<CreditBillEntity>> _billsCreditToEntities(String path) async {
+  return _billsToEntities(
+    path: path,
+    indexValue: 3,
+    indexName: 2,
+    ignoreWords: _ignoreWordsCredit,
   );
-  return pickedFile!.paths;
 }
 
-Future<List<CreditBillEntity>> _billsToEntities(String path) async {
+Future<List<CreditBillEntity>> _billsDebitToEntities(String path) async {
+  return _billsToEntities(
+    path: path,
+    indexValue: 1,
+    indexName: 3,
+    ignoreWords: _ignoreWordsDebit,
+    isDebit: true,
+  );
+}
+
+Future<List<CreditBillEntity>> _billsToEntities({
+  required String path,
+  required int indexName,
+  required int indexValue,
+  required List<String> ignoreWords,
+  bool isDebit = false,
+}) async {
   final res = File(path)
       .openRead()
       .transform(utf8.decoder)
       .transform(const LineSplitter())
       .where((item) => item.contains(RegExp(r'[0-9]')))
-      .map((element) {
-    var split = element.split(',');
-    split.removeAt(0);
-    split.removeAt(0);
+      .map((item) => item.split(','))
+      .map((item) {
     return CreditBillEntity(
-      name: split[0],
-      valor: num.tryParse(split[1])!,
+      name: item[indexName],
+      valor: num.tryParse(item[indexValue])!,
     );
   });
 
-  return (await res.toList())
-      .where((item) => !item.valor.isNegative)
-      .where((element) =>
-          element.name.toUpperCase() != "Saldo em atraso".toUpperCase())
+  var list = (await res.toList());
+
+  if (isDebit) {
+    list = list.where((element) {
+      if (isDebit) {
+        return element.valor.isNegative;
+      }
+      return true;
+    }).map((e) {
+      if (e.valor.isNegative) {
+        return e.copyWith(valor: e.valor * -1);
+      }
+      return e;
+    }).toList();
+  }
+
+  return list
+      .where((element) => !ignoreWords.any((ignore) =>
+          element.name.toUpperCase().contains(ignore.toUpperCase())))
       .toList();
 }
 
-Either<List<CreditBillEntity>, List<CategoryContextEntity>> _calculeBills(
-    List<CreditBillEntity> creditBillsEntity) {
+List<CategoryContextEntity> _calculeBills(
+  List<CreditBillEntity> creditBillsEntity,
+) {
   var allCategories = _repository.listAll();
   var allCategoriesCandidate = allCategories;
   var billsNotFound = <CreditBillEntity>[];
@@ -168,9 +257,16 @@ Either<List<CreditBillEntity>, List<CategoryContextEntity>> _calculeBills(
   }
 
   if (billsNotFound.isNotEmpty) {
-    debugPrint(billsNotFound.map((e) => e.name).join(' - '));
-    return Either.left(billsNotFound);
+    throw BusinessException(
+        error: billsNotFound.map((e) => '${e.name}\n${e.valor}').toList());
   }
 
-  return Either.right(allCategoriesCandidate);
+  return allCategoriesCandidate;
+}
+
+//  UTILS
+List<String> _alfabetyDtoZ() {
+  int charA = 'D'.codeUnitAt(0);
+  return String.fromCharCodes(Iterable.generate(26, (x) => charA + x))
+      .split('');
 }

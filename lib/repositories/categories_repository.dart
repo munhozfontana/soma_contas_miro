@@ -9,15 +9,26 @@ class CategoriesContextRepository {
         subCategories: [
           CategoryEntity(
             name: 'Aluguel / Prestação',
+            keyWordsToFind: [
+              'A C PINHEIRO CONSTRUCAO E ADMINISTRACAO LTDA',
+            ],
           ),
-          CategoryEntity(
-            name: 'Dhama(parcela + condominio)',
-          ),
+          CategoryEntity(name: 'Dhama(parcela + condominio)', keyWordsToFind: [
+            'EMPREENDIMENTOS IMOBILIARIOS DAMHA',
+            'ASSOCIACAO RESIDENCIAL DAMHA II'
+          ]),
           CategoryEntity(
             name: 'Conta de luz',
+            keyWordsToFind: [
+              'NEOENERGIA',
+            ],
           ),
           CategoryEntity(
             name: 'Conta de água',
+            keyWordsToFind: [
+              'CAESB',
+              'COMPANHIA DE SANEAMENTO AMBIENTAL DO DISTRITO FEDERAL',
+            ],
           ),
           CategoryEntity(
             name: 'Gás',
@@ -32,8 +43,10 @@ class CategoriesContextRepository {
             name: 'Telefone fixo',
           ),
           CategoryEntity(
-            name: 'Telefone celular(todas as contas)',
-          ),
+              name: 'Telefone celular(todas as contas)',
+              keyWordsToFind: [
+                'CLARO',
+              ]),
           CategoryEntity(
             name: 'Reparos na casa / apartamento',
           ),
@@ -108,6 +121,8 @@ class CategoriesContextRepository {
               'Cozinha e Bar da Lu',
               'Cozinha',
               'Df Comercio de Sobreme',
+              'Mv Presentes',
+              'QUEDIMO VOGADO MILHOMENS',
             ],
           ),
           CategoryEntity(
@@ -182,15 +197,20 @@ class CategoriesContextRepository {
           CategoryEntity(
             name: 'Mensalidade',
             keyWordsToFind: [
+              'DYNAMIC LINGUAGES',
               'Passei Direto',
+              'CENTRO DE EDUCACAO SUPERIOR',
             ],
           ),
           CategoryEntity(
             name: 'Atividade Extra',
           ),
-          CategoryEntity(name: 'Livros', keyWordsToFind: [
-            'Times',
-          ]),
+          CategoryEntity(
+            name: 'Livros',
+            keyWordsToFind: [
+              'Times',
+            ],
+          ),
           CategoryEntity(
             name: 'Xerox',
           ),
@@ -211,9 +231,13 @@ class CategoriesContextRepository {
       CategoryContextEntity(
         name: 'Saúde & Beleza',
         subCategories: [
-          CategoryEntity(name: 'Plano de saúde', keyWordsToFind: [
-            'Amil',
-          ]),
+          CategoryEntity(
+            name: 'Plano de saúde',
+            keyWordsToFind: [
+              'Amil',
+              'BIANCA CHRISTINE DA SILVA SOARES',
+            ],
+          ),
           CategoryEntity(
             name: 'Médicos / Dentistas / Fisioterapeuta ',
           ),
@@ -232,6 +256,7 @@ class CategoriesContextRepository {
             'Drogasil',
             'Drogaria',
             'Atmdrog Medvip Qe',
+            'Cosmeticos',
           ]),
         ],
       ),
@@ -294,6 +319,7 @@ class CategoriesContextRepository {
             keyWordsToFind: [
               'Lojas Renner Fl',
               'V Visual',
+              'REALIZE CREDITO FINANCIAMENTO E INVESTIM',
             ],
           ),
           CategoryEntity(
@@ -321,6 +347,11 @@ class CategoriesContextRepository {
           ),
           CategoryEntity(
             name: 'PJ',
+            keyWordsToFind: [
+              'IUGU SERVICOS NA INTERNET',
+              'DAS - Simples Nacional',
+              'DARF',
+            ],
           ),
           CategoryEntity(
             name: 'Sindicato',
@@ -382,14 +413,24 @@ class CategoriesContextRepository {
           ),
           CategoryEntity(
             name: 'Serviços bancários/taxas de investimentos',
+            keyWordsToFind: [
+              'Resgate de crédito pessoal',
+            ],
           ),
           CategoryEntity(name: 'Cartões a cancelar', keyWordsToFind: [
             "Saldo em atraso",
             "IOF de atraso",
             "Multa de atraso",
+            "841803-9",
+            "6847829495-1",
+            "28431-9",
+            "982792-7",
           ]),
           CategoryEntity(
             name: 'Multa/TAXAS',
+            keyWordsToFind: [
+              'DETRAN',
+            ],
           ),
           CategoryEntity(
             name: 'Outros',
@@ -397,6 +438,9 @@ class CategoriesContextRepository {
               'Pag*Antoniomagno',
               'Pag*Ceopag',
               'LUCAS RUAN FRANCA COSTA',
+              '353114192-0',
+              'Luis Eduardo De Oliveira Freitas',
+              'Valderice França Batista'
             ],
           ),
         ],

@@ -1,6 +1,8 @@
-import 'package:cross_file/cross_file.dart';
-import 'package:desktop_drop/desktop_drop.dart';
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/services.dart';
+
+import 'calculo.dart';
+import 'widgets/list_bills_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,148 +12,214 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<XFile> _list = [];
+  List<String> pathsCredit = [];
+  List<String> pathsDebit = [];
+  DateTime? selected;
 
-  bool _dragging = false;
+  String? resultado;
 
-  Future<void> _dialogBuilder(
-      BuildContext context, String text, String planilha) {
-    return showDialog<void>(
+  Future<void> submitForm() async {
+    if (pathsCredit.isEmpty) {
+      return;
+    }
+    if (selected == null) {
+      return displayInfoBar(
+        context,
+        builder: (context, close) {
+          return const InfoBar(
+              severity: InfoBarSeverity.warning,
+              title: Text(
+                'Data Obrigatória',
+              ));
+        },
+      );
+    }
+
+    (await importBills(pathsCredit, pathsDebit, selected!)).fold(
+      (l) {
+        showContentDialog(context, l);
+      },
+      (r) {
+        setState(() {
+          resultado = r;
+          selected = null;
+        });
+        displayInfoBar(
+          context,
+          builder: (context, close) {
+            return const InfoBar(
+                title: Text(
+              'Convertido com sucesso',
+            ));
+          },
+        );
+      },
+    );
+  }
+
+  void showContentDialog(BuildContext context, List<String> errors) async {
+    int? indexSelect;
+    await showDialog<String>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Ajustar: Planilha $planilha'),
-          content: SelectableText(text),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
+      builder: (context) => ContentDialog(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * .75,
+          maxHeight: MediaQuery.of(context).size.height * .65,
+        ),
+        title: const Text('Cadastrar as seguintes informações'),
+        content: StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return ListView.builder(
+                itemCount: errors.length,
+                itemBuilder: (context, index) {
+                  final error = errors[index];
+                  return ListTile.selectable(
+                      title: Text(error),
+                      selected: indexSelect == index,
+                      onSelectionChange: (v) {
+                        setState(() {
+                          indexSelect = index;
+                        });
+                      });
+                });
+          },
+        ),
+        actions: [
+          SizedBox(
+            height: 42,
+            child: FilledButton(
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(FluentIcons.copy),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text('Copiar'),
+                  ],
+                ),
               ),
-              child: const Text('Fechar'),
               onPressed: () {
-                Navigator.of(context).pop();
+                copyMessage(context, errors.join(jump));
               },
             ),
-          ],
-        );
+          ),
+          SizedBox(
+            height: 42,
+            child: FilledButton(
+              child: const Center(child: Text('Fechar')),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> copyMessage(BuildContext context, String copyValue) {
+    return displayInfoBar(
+      context,
+      builder: (context, close) {
+        Clipboard.setData(ClipboardData(text: copyValue));
+        return const InfoBar(
+            title: Center(
+          child: Text(
+            'Copiado',
+          ),
+        ));
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    var textStyles = Theme.of(context).textTheme;
-    var child = Padding(
-      padding: const EdgeInsets.all(14),
-      child: Column(
+    return ScaffoldPage.withPadding(
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                'Arraste excel do crédito',
-                style: textStyles.titleLarge,
+              const Spacer(flex: 6),
+              Expanded(
+                flex: 3,
+                child: SizedBox(
+                  height: 32,
+                  child: FilledButton(
+                      onPressed: resultado != null
+                          ? () {
+                              copyMessage(context, resultado!);
+                            }
+                          : null,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Icon(FluentIcons.copy),
+                          Text('Copiar resultado'),
+                        ],
+                      )),
+                ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                'somente arquivo .CSV',
-                style: textStyles.labelSmall,
+              const SizedBox(width: 18),
+              Expanded(
+                flex: 3,
+                child: DatePicker(
+                  selected: selected,
+                  onChanged: (time) => setState(() => selected = time),
+                  showDay: false,
+                ),
+              ),
+              const SizedBox(width: 18),
+              Expanded(
+                flex: 2,
+                child: SizedBox(
+                  height: 32,
+                  child: FilledButton(
+                      onPressed: pathsCredit.isEmpty && pathsDebit.isEmpty
+                          ? null
+                          : () {
+                              submitForm();
+                            },
+                      child: const Center(child: Text('Calcular'))),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 24),
-          Container(
-            width: double.maxFinite,
-            height: 250,
-            decoration: BoxDecoration(
-              color: _dragging
-                  ? const Color.fromARGB(255, 224, 224, 224)
-                  : Colors.white,
-              boxShadow: kElevationToShadow[2],
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: DropTarget(
-              onDragDone: (detail) {
-                setState(() {
-                  _list.addAll(detail.files);
-                });
-              },
-              onDragEntered: (detail) {
-                setState(() {
-                  _dragging = true;
-                });
-              },
-              onDragExited: (detail) {
-                setState(() {
-                  _dragging = false;
-                });
-              },
-              child: _list.isEmpty
-                  ? Center(
-                      child: Text(
-                      "solte aqui",
-                      style: textStyles.bodyMedium,
-                    ))
-                  : Center(
-                      child: Text(
-                      "${_list.length} Arquivo(s)",
-                      style: textStyles.bodyMedium,
-                    )),
-            ),
-          ),
-          const SizedBox(height: 18),
-          Text(
-            'Arquivos',
-            style: textStyles.labelSmall,
-          ),
-          const SizedBox(height: 18),
-          Flexible(
-              child: ListView.separated(
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: kElevationToShadow[2],
-                ),
-                child: ListTile(
-                  onTap: () {
-                    setState(() {
-                      _list.removeAt(index);
-                    });
-                  },
-                  title: Text(_list[index].name),
-                  trailing: const Icon(
-                    Icons.close,
-                    color: Colors.red,
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: ListBillsWidget(
+                    title: 'Crédito',
+                    subTitle: 'somente arquivo .CSV',
+                    onChange: (listPaths) {
+                      setState(() {
+                        pathsCredit = listPaths;
+                      });
+                    },
                   ),
                 ),
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 6),
-            itemCount: _list.length,
-          )),
+                const SizedBox(width: 24),
+                Expanded(
+                  child: ListBillsWidget(
+                    title: 'Débito',
+                    subTitle: 'somente arquivo .CSV',
+                    onChange: (listPaths) {
+                      setState(() {
+                        pathsDebit = listPaths;
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
         ],
-      ),
-    );
-    return Scaffold(
-      body: Center(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width * .45,
-              height: MediaQuery.of(context).size.height * .60,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: kElevationToShadow[24],
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: child,
-            )
-          ],
-        ),
       ),
     );
   }
