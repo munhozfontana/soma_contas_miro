@@ -13,10 +13,13 @@ class CategoriesContextRepository {
               'A C PINHEIRO CONSTRUCAO E ADMINISTRACAO LTDA',
             ],
           ),
-          CategoryEntity(name: 'Dhama(parcela + condominio)', keyWordsToFind: [
-            'EMPREENDIMENTOS IMOBILIARIOS DAMHA',
-            'ASSOCIACAO RESIDENCIAL DAMHA II'
-          ]),
+          CategoryEntity(
+            name: 'Dhama(parcela + condominio)',
+            keyWordsToFind: [
+              'EMPREENDIMENTOS IMOBILIARIOS DAMHA',
+              'ASSOCIACAO RESIDENCIAL DAMHA II'
+            ],
+          ),
           CategoryEntity(
             name: 'Conta de luz',
             keyWordsToFind: [
@@ -49,6 +52,7 @@ class CategoriesContextRepository {
               ]),
           CategoryEntity(
             name: 'Reparos na casa / apartamento',
+            keyWordsToFind: [],
           ),
           CategoryEntity(
             name: 'Seguro Residencial',
@@ -57,7 +61,9 @@ class CategoriesContextRepository {
             name: 'Alarme',
           ),
           CategoryEntity(
-              name: 'Decoração / Casa', keyWordsToFind: ['Leroy Merlin']),
+            name: 'Decoração / Casa',
+            keyWordsToFind: ['Leroy Merlin'],
+          ),
           CategoryEntity(
             name: 'Faxineira / diarista',
           ),
@@ -88,6 +94,8 @@ class CategoriesContextRepository {
               'Assai Atacadista',
               'Pao de Acucar',
               'Pag*Emersonsilva',
+              'Golfo Importacao Expor',
+              'P. Acucar 308 309 Su',
             ],
           ),
           CategoryEntity(
@@ -123,6 +131,11 @@ class CategoriesContextRepository {
               'Df Comercio de Sobreme',
               'Mv Presentes',
               'QUEDIMO VOGADO MILHOMENS',
+              'Disk Bomba Lc',
+              'Viva Paleteria K',
+              'Tio Gordo Pj',
+              'O Arabe do Brasil',
+              'Pag*Comohamburgueria',
             ],
           ),
           CategoryEntity(
@@ -152,12 +165,14 @@ class CategoriesContextRepository {
               'Posto Pedra Bonita',
               'Auto Posto Cinco Estre',
               'Ancar Gestao de Empree',
+              'Posto Via Estrutural',
             ],
           ),
           CategoryEntity(
             name: 'Manutenção do carro',
             keyWordsToFind: [
               'Florianomendesreg',
+              'Ton Eduardo Sa T',
             ],
           ),
           CategoryEntity(
@@ -165,12 +180,18 @@ class CategoriesContextRepository {
           ),
           CategoryEntity(
             name: 'Estacionamento',
+            keyWordsToFind: [
+              'Operandi Parking',
+            ],
           ),
           CategoryEntity(
             name: 'IPVA/DPVAT',
           ),
           CategoryEntity(
             name: 'Aluguel / Prestação',
+            keyWordsToFind: [
+              'Pag*Marxcavalcantedos',
+            ],
           ),
           CategoryEntity(
             name: 'Seguro do carro',
@@ -247,6 +268,7 @@ class CategoriesContextRepository {
               'Ccs - Santa Paula',
               'Clinica de Imagem Sam',
               'Evo*Clinica O',
+              'Pag*Makeup',
             ],
           ),
           CategoryEntity(
@@ -267,17 +289,26 @@ class CategoriesContextRepository {
             name: 'Academia',
             keyWordsToFind: [
               'Bluefit',
+              'Sua Academia',
             ],
           ),
           CategoryEntity(
             name: 'Clube',
+            keyWordsToFind: [],
           ),
           CategoryEntity(
             name: 'Sócio Torcedor',
-            keyWordsToFind: ['Pag*Karlaalessandrafe'],
+            keyWordsToFind: [
+              'Pag*Karlaalessandrafe',
+            ],
           ),
           CategoryEntity(
             name: 'Parks / Clubs / Festas',
+            keyWordsToFind: [
+              'Na Venda Uk Brasil',
+              'Aguas Correntes Park',
+              'Club Aguas Correntes',
+            ],
           ),
           CategoryEntity(
             name: 'Assinaturas/Serviços',
@@ -286,17 +317,22 @@ class CategoriesContextRepository {
               'Google Disney Mobile',
               'Dl*Google Disney',
               'Amazonprimebr',
-              'Amazon.Com.Br'
+              'Amazon.Com.Br',
+              'Amazon Prime Canais',
             ],
           ),
           CategoryEntity(
             name: 'Cinema',
+            keyWordsToFind: [
+              'Ingresso.Com',
+            ],
           ),
           CategoryEntity(
             name: 'Lojas virtuais',
             keyWordsToFind: [
               'amazon-marketplace',
               'Amazon.Com.Br Digital',
+              'Mercpago *Buzina',
             ],
           ),
           CategoryEntity(
@@ -307,6 +343,9 @@ class CategoriesContextRepository {
               'Shopping',
               'Plush Toy',
               'Park Shopping',
+              'Mikami Produtos Japon',
+              'Daiso Brasilia',
+              '35369782-4',
             ],
           ),
         ],
@@ -338,6 +377,10 @@ class CategoriesContextRepository {
           ]),
           CategoryEntity(
             name: 'Eletrônicos',
+            keyWordsToFind: [
+              'Eletronica Silva',
+              'Ec*Pichaump',
+            ],
           ),
           CategoryEntity(
             name: 'Imposto de Renda',
@@ -351,6 +394,7 @@ class CategoriesContextRepository {
               'IUGU SERVICOS NA INTERNET',
               'DAS - Simples Nacional',
               'DARF',
+              'S. MONTEIRO CONTABILIDADE LTDA - ME por Banco BS2',
             ],
           ),
           CategoryEntity(
@@ -364,6 +408,9 @@ class CategoriesContextRepository {
           ),
           CategoryEntity(
             name: 'Presentes',
+            keyWordsToFind: [
+              'Carters',
+            ],
           ),
           CategoryEntity(
             name: 'Doações',
@@ -392,16 +439,23 @@ class CategoriesContextRepository {
         subCategories: [
           CategoryEntity(
             name: 'Serviços esporádicos',
+            keyWordsToFind: [
+              'Adriano de Mattos Sil',
+            ],
           ),
           CategoryEntity(
             name: 'Demais gastos',
+            keyWordsToFind: [
+              'Xeirinhos Com',
+            ],
           ),
           CategoryEntity(
             name: 'Gastos desconhecidos',
             keyWordsToFind: [
               "Francisco da Chaga de",
-              "Pag*Edivaldodesousasi",
+              "Pag*Dommusfundode",
               "Undergroundha",
+              "Pag*Antoniademaria",
               "Pag*Edivaldodesousasi",
               "Digital Doc",
               "INSTITUTO EURO AMERICANO DE EDUCACAO CIE",
@@ -409,23 +463,35 @@ class CategoriesContextRepository {
               "Enar Entretenimento",
               "Pague Menos",
               "Pag*Sejacomercial",
+              "7 - Sia",
+              "Pag*Josedariolimada",
+              "Pag*Sjcomerciale",
+              "27049239-9",
+              "P.M. DE CIDADE OCIDENTAL",
+              "Motiva Imoveis",
             ],
           ),
           CategoryEntity(
             name: 'Serviços bancários/taxas de investimentos',
             keyWordsToFind: [
               'Resgate de crédito pessoal',
+              'Juros de atraso de pagamento de pix',
+              'Juros de atraso de saque',
             ],
           ),
-          CategoryEntity(name: 'Cartões a cancelar', keyWordsToFind: [
-            "Saldo em atraso",
-            "IOF de atraso",
-            "Multa de atraso",
-            "841803-9",
-            "6847829495-1",
-            "28431-9",
-            "982792-7",
-          ]),
+          CategoryEntity(
+            name: 'Cartões a cancelar',
+            keyWordsToFind: [
+              "Saldo em atraso",
+              "IOF de atraso",
+              "Multa de atraso",
+              "841803-9",
+              "6847829495-1",
+              "28431-9",
+              "982792-7",
+              "19855477-6"
+            ],
+          ),
           CategoryEntity(
             name: 'Multa/TAXAS',
             keyWordsToFind: [

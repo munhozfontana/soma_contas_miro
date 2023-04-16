@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 
 import 'calculo.dart';
+import 'exceptions/Business_exception.dart';
 import 'widgets/list_bills_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       (r) {
         setState(() {
           resultado = r;
-          selected = null;
+          // selected = null;
         });
         displayInfoBar(
           context,
@@ -57,7 +58,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void showContentDialog(BuildContext context, List<String> errors) async {
+  void showContentDialog(
+    BuildContext context,
+    BusinessException businessException,
+  ) async {
     int? indexSelect;
     await showDialog<String>(
       context: context,
@@ -66,14 +70,23 @@ class _HomePageState extends State<HomePage> {
           maxWidth: MediaQuery.of(context).size.width * .75,
           maxHeight: MediaQuery.of(context).size.height * .65,
         ),
-        title: const Text('Cadastrar as seguintes informações'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Cadastrar as seguintes informações'),
+            Text(
+              businessException.fileName,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
         content: StatefulBuilder(
           builder:
               (BuildContext context, void Function(void Function()) setState) {
             return ListView.builder(
-                itemCount: errors.length,
+                itemCount: businessException.error.length,
                 itemBuilder: (context, index) {
-                  final error = errors[index];
+                  final error = businessException.error[index];
                   return ListTile.selectable(
                       title: Text(error),
                       selected: indexSelect == index,
@@ -102,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               onPressed: () {
-                copyMessage(context, errors.join(jump));
+                copyMessage(context, businessException.error.join(jump));
               },
             ),
           ),

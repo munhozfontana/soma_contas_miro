@@ -13,12 +13,17 @@ import 'repositories/categories_repository.dart';
 
 typedef Success = String;
 typedef Error = List<CreditBillEntity>;
+
+var initAt = 56;
 String jump = '\n';
 final _repository = CategoriesContextRepository();
 List<String> _ignoreWordsDebit = [
   "3061432-1",
   "975547-7",
   "3157037-9",
+  "9755477-0",
+  "40588937-6",
+  "59199397-2",
   "Pagamento de Fatura",
 ];
 
@@ -26,9 +31,11 @@ List<String> _ignoreWordsCredit = [
   "Pagamento recebido",
   "Crédito de atraso",
   "Pagamento de Fatura",
+  "Valderice Franca Batista",
+  "Lucas Ruan França Costa"
 ];
 
-Future<Either<List<String>, String>> importBills(
+Future<Either<BusinessException, String>> importBills(
     List<String> pathsCredit, List<String> pathsDebit, DateTime date) async {
   List<String> resCredit = [];
   List<String> resDebit = [];
@@ -56,7 +63,7 @@ Future<Either<List<String>, String>> importBills(
     Clipboard.setData(ClipboardData(text: resultExcel));
     return Right(resultExcel);
   } on BusinessException catch (e) {
-    return Left(e.error);
+    return Left(e);
   }
 }
 
@@ -85,7 +92,7 @@ Future<List<String>> calculo(
   for (var category in categoriesContext) {
     listBills.insert(
       lengthCount,
-      '=SUM($letterExcelFormula${54 + lengthCount}:$letterExcelFormula${54 + lengthCount + category.subCategories.length - 1})',
+      '=SUM($letterExcelFormula${initAt + lengthCount}:$letterExcelFormula${initAt + lengthCount + category.subCategories.length - 1})',
     );
     lengthCount += (category.subCategories.length + 1);
   }
@@ -117,7 +124,8 @@ Future<List<String>> _getTotalBills(
   for (var i = 0; i < paths.length; i++) {
     allListsNumbers.add([]);
     var creditBills = await toEntity(paths[i]!);
-    final res = _calculeBills(creditBills);
+    final res = _calculeBills(
+        creditBills, paths[i]!.split(Platform.pathSeparator).last);
     for (var e in res) {
       allListsNumbers[i].addAll(
         e.subCategories.map((e) => e.total.toDouble()).toList(),
@@ -213,8 +221,7 @@ Future<List<CreditBillEntity>> _billsToEntities({
 }
 
 List<CategoryContextEntity> _calculeBills(
-  List<CreditBillEntity> creditBillsEntity,
-) {
+    List<CreditBillEntity> creditBillsEntity, String fileName) {
   var allCategories = _repository.listAll();
   var allCategoriesCandidate = allCategories;
   var billsNotFound = <CreditBillEntity>[];
@@ -257,8 +264,12 @@ List<CategoryContextEntity> _calculeBills(
   }
 
   if (billsNotFound.isNotEmpty) {
+    var list = billsNotFound.map((e) => '${e.name}\n${e.valor}').toList();
+
     throw BusinessException(
-        error: billsNotFound.map((e) => '${e.name}\n${e.valor}').toList());
+      error: list,
+      fileName: fileName,
+    );
   }
 
   return allCategoriesCandidate;
