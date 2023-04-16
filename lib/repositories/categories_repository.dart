@@ -395,6 +395,7 @@ class CategoriesContextRepository {
               'DAS - Simples Nacional',
               'DARF',
               'S. MONTEIRO CONTABILIDADE LTDA - ME por Banco BS2',
+              'S MONTEIRO CONTABILIDADE LTDA ME',
             ],
           ),
           CategoryEntity(
