@@ -31,8 +31,6 @@ List<String> _ignoreWordsCredit = [
   "Pagamento recebido",
   "Crédito de atraso",
   "Pagamento de Fatura",
-  "Valderice Franca Batista",
-  "Lucas Ruan França Costa"
 ];
 
 Future<Either<BusinessException, String>> importBills(

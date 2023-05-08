@@ -49,6 +49,7 @@ class CategoriesContextRepository {
               name: 'Telefone celular(todas as contas)',
               keyWordsToFind: [
                 'CLARO',
+                'PAGUEVELOZ IP LTDA',
               ]),
           CategoryEntity(
             name: 'Reparos na casa / apartamento',
@@ -96,6 +97,7 @@ class CategoriesContextRepository {
               'Pag*Emersonsilva',
               'Golfo Importacao Expor',
               'P. Acucar 308 309 Su',
+              'Agência: 4222 Conta: 1288000000785650821-4',
             ],
           ),
           CategoryEntity(
@@ -136,6 +138,9 @@ class CategoriesContextRepository {
               'Tio Gordo Pj',
               'O Arabe do Brasil',
               'Pag*Comohamburgueria',
+              'Ezymart Norte',
+              'EZYMART SERVICOS E COMERCIO LTDA',
+              'Perto e Pronto',
             ],
           ),
           CategoryEntity(
@@ -152,6 +157,8 @@ class CategoriesContextRepository {
             keyWordsToFind: [
               'Padaria',
               'Paniville Paes e Deli',
+              'Confeitaria Doce Chalé',
+              'Agência: 1 Conta: 30997895-5',
             ],
           ),
         ],
@@ -313,6 +320,7 @@ class CategoriesContextRepository {
           CategoryEntity(
             name: 'Assinaturas/Serviços',
             keyWordsToFind: [
+              'Apple.Com/Bill',
               'Google Storage',
               'Google Disney Mobile',
               'Dl*Google Disney',
@@ -333,6 +341,7 @@ class CategoriesContextRepository {
               'amazon-marketplace',
               'Amazon.Com.Br Digital',
               'Mercpago *Buzina',
+              'Shein',
             ],
           ),
           CategoryEntity(
@@ -346,6 +355,7 @@ class CategoriesContextRepository {
               'Mikami Produtos Japon',
               'Daiso Brasilia',
               '35369782-4',
+              'No Limite Presentes',
             ],
           ),
         ],
@@ -366,6 +376,9 @@ class CategoriesContextRepository {
           ),
           CategoryEntity(
             name: 'Acessórios',
+            keyWordsToFind: [
+              'Pag*Realacessorios',
+            ],
           ),
         ],
       ),
@@ -380,6 +393,7 @@ class CategoriesContextRepository {
             keyWordsToFind: [
               'Eletronica Silva',
               'Ec*Pichaump',
+              'PICHAU',
             ],
           ),
           CategoryEntity(
@@ -448,28 +462,30 @@ class CategoriesContextRepository {
             name: 'Demais gastos',
             keyWordsToFind: [
               'Xeirinhos Com',
+              'Wesley Calixto Gomes da Silva',
+              'Agência: 3189 Conta: 2008271-1',
             ],
           ),
           CategoryEntity(
             name: 'Gastos desconhecidos',
             keyWordsToFind: [
-              "Francisco da Chaga de",
-              "Pag*Dommusfundode",
-              "Undergroundha",
-              "Pag*Antoniademaria",
-              "Pag*Edivaldodesousasi",
-              "Digital Doc",
-              "INSTITUTO EURO AMERICANO DE EDUCACAO CIE",
-              "Eronildes da Costa Ve",
-              "Enar Entretenimento",
-              "Pague Menos",
-              "Pag*Sejacomercial",
-              "7 - Sia",
-              "Pag*Josedariolimada",
-              "Pag*Sjcomerciale",
-              "27049239-9",
-              "P.M. DE CIDADE OCIDENTAL",
-              "Motiva Imoveis",
+              'Francisco da Chaga de',
+              'Pag*Dommusfundode',
+              'Undergroundha',
+              'Pag*Antoniademaria',
+              'Pag*Edivaldodesousasi',
+              'Digital Doc',
+              'INSTITUTO EURO AMERICANO DE EDUCACAO CIE',
+              'Eronildes da Costa Ve',
+              'Enar Entretenimento',
+              'Pague Menos',
+              'Pag*Sejacomercial',
+              '7 - Sia',
+              'Pag*Josedariolimada',
+              'Pag*Sjcomerciale',
+              '27049239-9',
+              'P.M. DE CIDADE OCIDENTAL',
+              'Motiva Imoveis',
             ],
           ),
           CategoryEntity(
@@ -483,20 +499,21 @@ class CategoriesContextRepository {
           CategoryEntity(
             name: 'Cartões a cancelar',
             keyWordsToFind: [
-              "Saldo em atraso",
-              "IOF de atraso",
-              "Multa de atraso",
-              "841803-9",
-              "6847829495-1",
-              "28431-9",
-              "982792-7",
-              "19855477-6"
+              'Saldo em atraso',
+              'IOF de atraso',
+              'Multa de atraso',
+              '841803-9',
+              '6847829495-1',
+              '28431-9',
+              '982792-7',
+              '19855477-6'
             ],
           ),
           CategoryEntity(
             name: 'Multa/TAXAS',
             keyWordsToFind: [
               'DETRAN',
+              '1273411102-0',
             ],
           ),
           CategoryEntity(
@@ -507,7 +524,9 @@ class CategoriesContextRepository {
               'LUCAS RUAN FRANCA COSTA',
               '353114192-0',
               'Luis Eduardo De Oliveira Freitas',
-              'Valderice França Batista'
+              'Valderice França Batista',
+              'Valderice Franca Batista',
+              'Lucas Ruan França Costa',
             ],
           ),
         ],
