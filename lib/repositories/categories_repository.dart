@@ -141,6 +141,9 @@ class CategoriesContextRepository {
               'Ezymart Norte',
               'EZYMART SERVICOS E COMERCIO LTDA',
               'Perto e Pronto',
+              'Pg *Ton Churitos',
+              'Ppb*Nativas Prime',
+              'Ana Cristina Reis da S',
             ],
           ),
           CategoryEntity(
@@ -159,6 +162,7 @@ class CategoriesContextRepository {
               'Paniville Paes e Deli',
               'Confeitaria Doce Chalé',
               'Agência: 1 Conta: 30997895-5',
+              'Panificadora e Confeit',
             ],
           ),
         ],
@@ -394,6 +398,8 @@ class CategoriesContextRepository {
               'Eletronica Silva',
               'Ec*Pichaump',
               'PICHAU',
+              'Kabum',
+              'Eduardo Inacio da Sil',
             ],
           ),
           CategoryEntity(
