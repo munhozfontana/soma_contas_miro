@@ -36,9 +36,9 @@ class CategoriesContextRepository {
           CategoryEntity(
             name: 'Gás',
           ),
-          CategoryEntity(
-            name: 'IPTU',
-          ),
+          CategoryEntity(name: 'IPTU', keyWordsToFind: [
+            'Pagamento de boleto efetuado - P.M. DE CIDADE OCIDENTAL',
+          ]),
           CategoryEntity(
             name: 'Internet',
           ),
@@ -53,7 +53,9 @@ class CategoriesContextRepository {
               ]),
           CategoryEntity(
             name: 'Reparos na casa / apartamento',
-            keyWordsToFind: [],
+            keyWordsToFind: [
+              'DANIELSON ALVES DOS SANTOS',
+            ],
           ),
           CategoryEntity(
             name: 'Seguro Residencial',
@@ -98,6 +100,7 @@ class CategoriesContextRepository {
               'Golfo Importacao Expor',
               'P. Acucar 308 309 Su',
               'Agência: 4222 Conta: 1288000000785650821-4',
+              'Pag*Sejacomercial',
             ],
           ),
           CategoryEntity(
@@ -163,6 +166,7 @@ class CategoriesContextRepository {
               'Confeitaria Doce Chalé',
               'Agência: 1 Conta: 30997895-5',
               'Panificadora e Confeit',
+              'PRIMICIAS GUARA PANIFICACAO E CONFEITARIA LTDA',
             ],
           ),
         ],
@@ -284,6 +288,9 @@ class CategoriesContextRepository {
           ),
           CategoryEntity(
             name: 'Salão de beleza / barbearia',
+            keyWordsToFind: [
+              'MARIA DIVANIA ALVES COSTA',
+            ],
           ),
           CategoryEntity(name: 'Farmácia', keyWordsToFind: [
             'Drogasil',
@@ -346,6 +353,7 @@ class CategoriesContextRepository {
               'Amazon.Com.Br Digital',
               'Mercpago *Buzina',
               'Shein',
+              'Pay By Steam',
             ],
           ),
           CategoryEntity(
@@ -373,6 +381,8 @@ class CategoriesContextRepository {
               'Lojas Renner Fl',
               'V Visual',
               'REALIZE CREDITO FINANCIAMENTO E INVESTIM',
+              'CAIO KELVIN DOS SANTOS MELO',
+              'MARIA LAUZIMAR MARQUES DOS SANTOS',
             ],
           ),
           CategoryEntity(
@@ -435,6 +445,9 @@ class CategoriesContextRepository {
           ),
           CategoryEntity(
             name: 'Doações',
+            keyWordsToFind: [
+              'VAKINHA COM NEGOCIOS VIRTUAIS LTDA EPP',
+            ],
           ),
         ],
       ),
@@ -475,23 +488,23 @@ class CategoriesContextRepository {
           CategoryEntity(
             name: 'Gastos desconhecidos',
             keyWordsToFind: [
-              'Francisco da Chaga de',
-              'Pag*Dommusfundode',
-              'Undergroundha',
-              'Pag*Antoniademaria',
-              'Pag*Edivaldodesousasi',
-              'Digital Doc',
-              'INSTITUTO EURO AMERICANO DE EDUCACAO CIE',
-              'Eronildes da Costa Ve',
-              'Enar Entretenimento',
-              'Pague Menos',
-              'Pag*Sejacomercial',
-              '7 - Sia',
-              'Pag*Josedariolimada',
-              'Pag*Sjcomerciale',
-              '27049239-9',
-              'P.M. DE CIDADE OCIDENTAL',
-              'Motiva Imoveis',
+              // 'Francisco da Chaga de',
+              // 'Pag*Dommusfundode',
+              // 'Undergroundha',
+              // 'Pag*Antoniademaria',
+              // 'Pag*Edivaldodesousasi',
+              // 'Digital Doc',
+              // 'INSTITUTO EURO AMERICANO DE EDUCACAO CIE',
+              // 'Eronildes da Costa Ve',
+              // 'Enar Entretenimento',
+              // 'Pague Menos',
+              // 'Pag*Sejacomercial',
+              // '7 - Sia',
+              // 'Pag*Josedariolimada',
+              // 'Pag*Sjcomerciale',
+              // '27049239-9',
+              // 'P.M. DE CIDADE OCIDENTAL',
+              // 'Motiva Imoveis',
             ],
           ),
           CategoryEntity(
@@ -512,7 +525,8 @@ class CategoriesContextRepository {
               '6847829495-1',
               '28431-9',
               '982792-7',
-              '19855477-6'
+              '19855477-6',
+              'Pagamento de boleto efetuado - BANCO BRADESCO S.A'
             ],
           ),
           CategoryEntity(
@@ -533,6 +547,7 @@ class CategoriesContextRepository {
               'Valderice França Batista',
               'Valderice Franca Batista',
               'Lucas Ruan França Costa',
+              '59199397-2'
             ],
           ),
         ],

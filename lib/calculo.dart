@@ -18,17 +18,15 @@ var initAt = 56;
 String jump = '\n';
 final _repository = CategoriesContextRepository();
 List<String> _ignoreWordsDebit = [
-  "3061432-1",
-  "975547-7",
-  "3157037-9",
-  "9755477-0",
-  "40588937-6",
-  "59199397-2",
-  "Pagamento de Fatura",
+  'Transferência enviada pelo Pix - Istefani França Costa - •••.802.001-•• - NU PAGAMENTOS - IP (0260) Agência: 1 Conta: 3157037-9',
+  'Pagamento de fatura',
+  'Transferência enviada pelo Pix',
+  'Transferência enviada - Luís Fernando Munhoz Fontana Neto - •••.016.141-•• - Easynvest - Título Corretora de Valores SA (0140) Agência: 1 Conta: 6166196-0',
+  'Transferência enviada - Istefani Franca Costa  - •••.802.001-•• - Easynvest - Título Corretora de Valores SA (0140) Agência: 1 Conta: 975547-7',
 ];
 
 List<String> _ignoreWordsCredit = [
-  "Pagamento recebido",
+  'Pagamento recebido',
   "Crédito de atraso",
   "Pagamento de Fatura",
 ];
@@ -213,8 +211,16 @@ Future<List<CreditBillEntity>> _billsToEntities({
   }
 
   return list
-      .where((element) => !ignoreWords.any((ignore) =>
-          element.name.toUpperCase().contains(ignore.toUpperCase())))
+      .where((element) => !ignoreWords.any((ignore) {
+            if (element.name.toUpperCase() == ignore.toUpperCase()) {
+              print(element.name.toUpperCase());
+              print(ignore.toUpperCase());
+              print('${element.name.toUpperCase() == ignore.toUpperCase()}');
+              print('####');
+            }
+
+            return element.name.toUpperCase() == ignore.toUpperCase();
+          }))
       .toList();
 }
 
@@ -232,7 +238,10 @@ List<CategoryContextEntity> _calculeBills(
     for (var categoryContext in allCategories) {
       for (var category in categoryContext.subCategories) {
         final findPoint = category.keyWordsToFind.where((keyWork) {
-          return bill.name.toUpperCase().contains(keyWork.toUpperCase());
+          return bill.name
+              .toUpperCase()
+              .trim()
+              .contains(keyWork.toUpperCase().trim());
         }).length;
 
         if (points < findPoint) {
